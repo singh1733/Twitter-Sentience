@@ -3,12 +3,22 @@ import tweepy
 import sys
 
 my_keys=open('api_key.txt','r').read().splitlines()
-api_key=my_keys[0]
-api_key_secret=my_keys[2]
-access_token=my_keys[4]
-access_token_secret=my_keys[6]
 
-#build a connection to the app
-auth_handler=tweepy.OAuthHandler(consumer_key=api_key, consumer_secret=api_key_secret)
-auth_handler.set_access_token(access_token, access_token_secret)
-api=tweepy.API(auth_handler)
+
+# Authenticate to Twitter
+client = tweepy.Client(
+    bearer_token=my_keys[8],
+    consumer_key=my_keys[0],
+    consumer_secret=my_keys[2],
+    access_token=my_keys[4],
+    access_token_secret=my_keys[6]
+)
+
+#gather tweets
+search_term='Ohio'
+tweet_amount=100
+
+tweets = client.search_recent_tweets(query=search_term, max_results=tweet_amount)
+
+for tweet in tweets.data:
+    print(tweet.id)
